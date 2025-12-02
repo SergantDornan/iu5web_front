@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 //const homieIcon = new URL('mock_images/homie.png', import.meta.env.BASE_URL).href;
+import homie from './homie.png';
 
 export const AppNavbar = () => {
     return (
@@ -11,7 +12,7 @@ export const AppNavbar = () => {
                 <Link to="/">
                     {/* Убедись, что homie.png лежит в public/images/ */}
                     <img 
-                        src="electr-frontend/mock_images/homie.png"
+                        src={homie}
                         alt="Домой" 
                         style={{ height: '30px', verticalAlign: 'middle' }} 
                     />

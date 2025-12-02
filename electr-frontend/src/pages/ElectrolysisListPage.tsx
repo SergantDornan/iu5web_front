@@ -6,6 +6,8 @@ import type { IElectrolysis } from '../types';
 import DefaultImage from '/mock_images/default.png';
 
 
+import cartIcon from './cart.png';   // Укажи правильный путь к файлу
+
 //const cartIcon = new URL('mock_images/cart.png', import.meta.env.BASE_URL).href;
 
 export const ElectrolysisListPage = () => {
@@ -128,7 +130,7 @@ export const ElectrolysisListPage = () => {
                     alignItems: 'center'
                 }}>
                     <img 
-                        src="electr-frontend/mock_images/cart.png" 
+                        src={cartIcon}
                         alt="Корзина" 
                         style={{ height: '35px', verticalAlign: 'middle' }} 
                     />
