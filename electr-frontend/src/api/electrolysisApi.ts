@@ -1,7 +1,6 @@
 import type { IElectrolysis, IPaginatedElectrolysis } from '../types';
+import { ELECTROLYSIS_MOCK } from './mock'; // Убедись, что mock.ts рядом
 
-
-// Интерфейс параметров фильтрации (он только тут нужен, можно оставить)
 export interface ElectrolysisListParams {
     title?: string;
     min_voltage?: string;
@@ -10,7 +9,6 @@ export interface ElectrolysisListParams {
 
 const BASE_URL = '/api';
 
-// Обрати внимание: я поменял тип возвращаемого значения на IPaginatedElectrolysis
 export const getElectrolysisList = async (params?: ElectrolysisListParams): Promise<IPaginatedElectrolysis> => {
     const query = new URLSearchParams();
     
@@ -18,17 +16,37 @@ export const getElectrolysisList = async (params?: ElectrolysisListParams): Prom
     if (params?.min_voltage) query.append('min_voltage', params.min_voltage);
     if (params?.max_voltage) query.append('max_voltage', params.max_voltage);
 
-    const res = await fetch(`${BASE_URL}/electrolysis?${query.toString()}`);
-    if (!res.ok) {
-        throw new Error(`Failed to fetch electrolysis list: ${res.statusText}`);
+    try {
+        const res = await fetch(`${BASE_URL}/electrolysis?${query.toString()}`);
+        if (!res.ok) {
+            throw new Error(`Failed to fetch electrolysis list: ${res.statusText}`);
+        }
+        return await res.json();
+    } catch (error) {
+        console.warn('API (PWA) недоступен, подставляем MOCK-данные:', error);
+        // PWA должен работать офлайн, поэтому возвращаем моки
+        return ELECTROLYSIS_MOCK;
     }
-    return res.json();
 };
 
 export const getElectrolysisById = async (id: string): Promise<IElectrolysis> => {
-    const res = await fetch(`${BASE_URL}/electrolysis/${id}`);
-    if (!res.ok) {
-        throw new Error(`Failed to fetch electrolysis with id ${id}`);
+    try {
+        const res = await fetch(`${BASE_URL}/electrolysis/${id}`);
+        if (!res.ok) {
+            throw new Error(`Failed to fetch electrolysis with id ${id}`);
+        }
+        return await res.json();
+    } catch (error) {
+        console.warn(`API (PWA) недоступен для id=${id}, ищем в MOCK-данных:`, error);
+        
+        const item = ELECTROLYSIS_MOCK.items.find(
+            (i: IElectrolysis) => i.id === Number(id)
+        );
+
+        if (item) {
+            return item;
+        }
+        
+        throw new Error(`Элемент с id ${id} не найден ни в API, ни в MOCK-данных`);
     }
-    return res.json();
 };
