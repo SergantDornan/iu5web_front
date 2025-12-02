@@ -1,0 +1,3 @@
+electr-frontend/node_modules/*
+electr-frontend/dist/*
+electr-frontend/src-tauri/*

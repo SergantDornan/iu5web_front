@@ -90,13 +90,14 @@ void findFiles(std::vector<std::string>& v, const std::string& path){
 	for(int i = 1; i < dirs.size(); ++i){
 		std::string ext = getExt(dirs[i]);
 		if(ext == "ts" || ext == "css" || ext == "tsx" || ext == "json") v.push_back(dirs[i]);
-		if(std::filesystem::is_directory(dirs[i]) && getName(dirs[i]) != "docs" && getName(dirs[i]) != "node_modules") findFiles(v, dirs[i]);
+		if(std::filesystem::is_directory(dirs[i]) && getName(dirs[i]) != "docs"
+		 && getName(dirs[i]) != "node_modules" && getName(dirs[i]) != ".git") findFiles(v, dirs[i]);
 	}
 }
 
 int main(){
 	std::vector<std::string> paths;
-	findFiles(paths, (cwd() + "/frax-frontend"));
+	findFiles(paths, (cwd() + "/electr-frontend"));
 	std::ofstream out("./prompt");
 	out << "У меня есть несколько файлов:" << std::endl;
 	for(int i = 0; i < paths.size(); ++i){
@@ -131,7 +132,7 @@ int main(){
 	out << "```" << std::endl;
 	in3.close();
 	out.close();
-	std::string cmd = "tree ./frax-frontend/src >> ./prompt";
+	std::string cmd = "tree ./electr-frontend/src >> ./prompt";
 	system(cmd.c_str());
 	return 0;
 }
