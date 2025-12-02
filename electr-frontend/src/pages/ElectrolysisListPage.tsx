@@ -49,7 +49,7 @@ export const ElectrolysisListPage = () => {
                     className="search-input" 
                     style={{ width: '600px' }}
                     type="text" 
-                    placeholder="Поиск по услугам..." 
+                    placeholder="Поиск электрозиза..." 
                     value={searchTitle}
                     onChange={(e) => setSearchTitle(e.target.value)}
                 />
