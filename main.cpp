@@ -89,9 +89,14 @@ void findFiles(std::vector<std::string>& v, const std::string& path){
 	auto dirs = getDirs(path);
 	for(int i = 1; i < dirs.size(); ++i){
 		std::string ext = getExt(dirs[i]);
-		if(ext == "ts" || ext == "css" || ext == "tsx" || ext == "json") v.push_back(dirs[i]);
+		if((ext == "ts" || ext == "css" || ext == "tsx" || ext == "json")
+			&& getName(dirs[i]) != "vite.config.ts" && 
+			getName(dirs[i]) != "package.json" && 
+			getName(dirs[i]) != "package-lock.json" &&
+			getName(dirs[i]) != "index-Bg7oE3av.css") v.push_back(dirs[i]);
 		if(std::filesystem::is_directory(dirs[i]) && getName(dirs[i]) != "docs"
-		 && getName(dirs[i]) != "node_modules" && getName(dirs[i]) != ".git") findFiles(v, dirs[i]);
+		 && getName(dirs[i]) != "node_modules" && getName(dirs[i]) != ".git"
+		 && getName(dirs[i]) != "src-tauri") findFiles(v, dirs[i]);
 	}
 }
 

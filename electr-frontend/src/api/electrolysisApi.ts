@@ -7,7 +7,10 @@ export interface ElectrolysisListParams {
     max_voltage?: string;
 }
 
-const BASE_URL = '/api';
+const BASE_URL = import.meta.env.PROD 
+    ? 'http://localhost:8080/api'
+    : '/api';                      
+
 
 export const getElectrolysisList = async (params?: ElectrolysisListParams): Promise<IPaginatedElectrolysis> => {
     const query = new URLSearchParams();

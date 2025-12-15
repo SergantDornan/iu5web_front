@@ -18,7 +18,7 @@ function App() {
     return (
         // --- ИЗМЕНЕНИЕ: Добавлен basename для GitHub Pages ---
         // ЗАМЕНИ '/electr-frontend' НА НАЗВАНИЕ СВОЕГО РЕПОЗИТОРИЯ
-        <BrowserRouter basename="/iu5web_front">
+        <BrowserRouter basename="/iu5web_front_electrolysis">
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route element={<MainLayout />}>

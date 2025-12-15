@@ -6,7 +6,7 @@ import mkcert from 'vite-plugin-mkcert';
 // https://vitejs.dev/config/
 export default defineConfig({
   // --- ВАЖНО: БАЗОВЫЙ ПУТЬ ДЛЯ GITHUB PAGES ---
-  base: '/iu5web_front/', 
+  base: '/iu5web_front_electrolysis/', 
   // --------------------------------------------
 
   plugins: [
