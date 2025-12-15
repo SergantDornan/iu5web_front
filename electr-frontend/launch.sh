@@ -1,0 +1,1 @@
+./src-tauri/target/release/bundle/appimage/electr-frontend_0.1.0_amd64.AppImage

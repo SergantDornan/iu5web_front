@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-     "tauri": "tauri"
+    "tauri": "tauri"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
