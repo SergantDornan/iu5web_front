@@ -1,3 +1,9 @@
+export interface IMedia {
+    id: number;
+    url: string;
+    type: 'image' | 'video';
+}
+
 export interface IElectrolysis {
     id: number;
     title: string;
@@ -7,6 +13,8 @@ export interface IElectrolysis {
     base_voltage?: number;        // json:"base_voltage"
     material_coefficient?: number;// json:"material_coefficient"
     status?: boolean;             // json:"status"
+
+    media_files?: IMedia[];
 }
 
 export interface IPaginatedElectrolysis {

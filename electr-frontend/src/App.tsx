@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import { AppNavbar } from './components/Navbar';
 import { HomePage } from './pages/ElectrHomePage';
-// Убедись, что имена файлов совпадают с этими путями:
 import { ElectrolysisListPage } from './pages/ElectrolysisListPage';
 import { ElectrolysisDetailPage } from './pages/ElectrolysisDetailPage';
+// !!! ИМПОРТ !!!
+import { OrdersPage } from './pages/OrdersPage';
 
 const MainLayout = () => (
     <>
@@ -22,6 +23,9 @@ function App() {
                 <Route element={<MainLayout />}>
                     <Route path="/electrolysis" element={<ElectrolysisListPage />} />
                     <Route path="/electrolysis/:id" element={<ElectrolysisDetailPage />} />
+                    
+                    {/* !!! НОВЫЙ МАРШРУТ !!! */}
+                    <Route path="/orders" element={<OrdersPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

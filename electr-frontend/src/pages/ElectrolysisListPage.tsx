@@ -115,7 +115,7 @@ export const ElectrolysisListPage = () => {
                 color: '#fff',
                 zIndex: 990
             }}>
-                <span style={{ fontWeight: 'bold' }}>Услуг: {items.length}</span>
+                <span style={{ fontWeight: 'bold' }}>Услуг: 0</span>
                 
                 <Link to="#" className="card-button" style={{
                     backgroundColor: '#fff',
