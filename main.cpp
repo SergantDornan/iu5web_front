@@ -91,7 +91,8 @@ void findFiles(std::vector<std::string>& v, const std::string& path){
 		std::string ext = getExt(dirs[i]);
 		if(ext == "ts" || ext == "css" || ext == "tsx" || ext == "json") v.push_back(dirs[i]);
 		if(std::filesystem::is_directory(dirs[i]) && getName(dirs[i]) != "docs"
-		 && getName(dirs[i]) != "node_modules" && getName(dirs[i]) != ".git") findFiles(v, dirs[i]);
+		 && getName(dirs[i]) != "node_modules" && getName(dirs[i]) != ".git" &&
+		 getName(dirs[i]) != "src-tauri") findFiles(v, dirs[i]);
 	}
 }
 
