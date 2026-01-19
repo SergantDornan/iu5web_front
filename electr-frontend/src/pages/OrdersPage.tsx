@@ -86,7 +86,7 @@ export const OrdersPage = () => {
 
             // Используем полный путь, если прокси не настроен, или относительный, если настроен.
             // Лучше оставить относительный /api, но убедитесь что vite proxy работает.
-            const response = await axios.get<Order[]>("/api/order", {
+            const response = await axios.get<Order[]>("http://192.168.1.148:8080/api/order", {
                 headers: { Authorization: `Bearer ${token}` },
                 params: params
             });
@@ -119,7 +119,7 @@ export const OrdersPage = () => {
     const handleResolve = async (orderId: number, action: "complete" | "reject") => {
         const token = localStorage.getItem("token");
         try {
-            await axios.put(`/api/order/${orderId}/resolve`, 
+            await axios.put(`http://192.168.1.148:8080/api/order/${orderId}/resolve`, 
                 { action },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
