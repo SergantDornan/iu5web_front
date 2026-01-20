@@ -1,16 +1,20 @@
 // vite.config.ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import basicSsl from '@vitejs/plugin-basic-ssl' // <--- 1. Импорт
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    basicSsl() // <--- 2. Добавляем плагин
+  ],
   server: {
-    port: 3000, // Указываем порт для фронтенда
+    port: 3000, 
+    https: true, // Это включает использование SSL сертификата от плагина
     proxy: {
-      // Проксируем запросы /api на ваш бэкенд
       '/api': {
-        target: 'http://localhost:8080', // Адрес нашего Go-сервиса
-        changeOrigin: true, // Необходимо для виртуальных хостов
+        target: 'http://localhost:8080', 
+        changeOrigin: true, 
       },
     },
   },
