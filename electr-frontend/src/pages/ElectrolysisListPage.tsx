@@ -14,26 +14,39 @@ export const ElectrolysisListPage = () => {
     const [items, setItems] = useState<IElectrolysis[]>([]);
     const [loading, setLoading] = useState(true);
     
-    const [searchTitle, setSearchTitle] = useState('');
-    const [minVolt, setMinVolt] = useState('');
-    const [maxVolt, setMaxVolt] = useState('');
+    const [searchTitle, setSearchTitle] = useState(() => {
+        return sessionStorage.getItem('electro_search') || '';
+    });
+    const [minVolt, setMinVolt] = useState(() => {
+        return sessionStorage.getItem('electro_min') || '';
+    });
+    const [maxVolt, setMaxVolt] = useState(() => {
+        return sessionStorage.getItem('electro_max') || '';
+    });
 
     const fetchItems = () => {
         setLoading(true);
         getElectrolysisList({ 
             title: searchTitle,
-            min_voltage: minVolt, // Бэкенд теперь это ждет
-            max_voltage: maxVolt  // Бэкенд теперь это ждет
+            min_voltage: minVolt, 
+            max_voltage: maxVolt  
         })
             .then(data => setItems(data.items || []))
             .catch(err => console.error("Failed to fetch", err))
             .finally(() => setLoading(false));
     };
 
+    // 2. При любом изменении полей — сразу сохраняем в sessionStorage
     useEffect(() => {
+        sessionStorage.setItem('electro_search', searchTitle);
+        sessionStorage.setItem('electro_min', minVolt);
+        sessionStorage.setItem('electro_max', maxVolt);
+
+        // Debounce: ждем 500мс, прежде чем делать запрос (чтобы не спамить при вводе)
         const timer = setTimeout(() => {
             fetchItems();
         }, 500);
+        
         return () => clearTimeout(timer);
     }, [searchTitle, minVolt, maxVolt]);
 
@@ -120,7 +133,7 @@ export const ElectrolysisListPage = () => {
                 color: '#fff',
                 zIndex: 990
             }}>
-                <span style={{ fontWeight: 'bold' }}>Услуг: {items.length}</span>
+                <span style={{ fontWeight: 'bold' }}>Услуг: 0</span>
                 
                 <Link to="#" className="card-button" style={{
                     backgroundColor: '#fff',

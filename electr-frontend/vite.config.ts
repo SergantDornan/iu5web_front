@@ -5,17 +5,16 @@ import mkcert from 'vite-plugin-mkcert';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // --- ВАЖНО: БАЗОВЫЙ ПУТЬ ДЛЯ GITHUB PAGES ---
-  base: '/iu5web_front_electrolysis/', 
-  // --------------------------------------------
+
+  base: '/iu5web_front_electrolysis/',
 
   plugins: [
     react(),
-    mkcert(),
+    mkcert(), // Создает локальный HTTPS сертификат и включает https
     VitePWA({
       registerType: 'autoUpdate',
       devOptions: {
-        enabled: true,
+        enabled: true, // Включаем PWA в режиме dev
       },
       manifest: {
         name: 'Electrolysis Service',
@@ -23,14 +22,12 @@ export default defineConfig({
         description: 'Сервис заказа услуг электролиза',
         theme_color: '#003366',
         background_color: '#ffffff',
-        
-        // Используем относительные пути или совпадающие с base
-        start_url: './', 
-        display: 'standalone',
+        start_url: '/iu5web_front_electrolysis/', // Важно: корневой путь
+        display: 'standalone', // Убирает интерфейс браузера (выглядит как приложение)
         orientation: 'portrait',
         icons: [
           {
-            src: 'logo/logo192.png', // Убрал начальный слеш, чтобы путь был относительным
+            src: 'logo/logo192.png', // Путь относительно public
             type: 'image/png',
             sizes: '192x192',
             purpose: 'any maskable'
@@ -47,10 +44,9 @@ export default defineConfig({
   ],
   server: {
     port: 3000,
-  //  https: true, 
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'http://localhost:8080', // Или твой IP, если нужно
         changeOrigin: true,
       },
     },

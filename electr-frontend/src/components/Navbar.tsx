@@ -43,7 +43,7 @@ export const AppNavbar = () => {
                 <Link to="/">
                     {/* Убедись, что homie.png лежит в public/images/ */}
                     <img 
-                        src="/public/mock_images/homie.png" 
+                        src="/iu5web_front_electrolysis/mock_images/homie.png" 
                         alt="Домой" 
                         style={{ height: '30px', verticalAlign: 'middle' }} 
                     />
