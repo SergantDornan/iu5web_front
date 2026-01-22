@@ -1,15 +1,89 @@
 import type { IElectrolysis, IPaginatedElectrolysis } from '../types';
-import { ELECTROLYSIS_MOCK } from './mock'; // mock.ts рядом с этим файлом
+import { ELECTROLYSIS_MOCK } from './mock';
 
-// Интерфейс параметров фильтрации
 export interface ElectrolysisListParams {
     title?: string;
     min_voltage?: string;
     max_voltage?: string;
 }
 
-// Можно оставить IP, как у тебя сейчас
-const BASE_URL = 'http://192.168.1.148:8080/api';
+interface IOrder {
+    id: number;
+    status: number;
+    calculated_value?: number;
+    electr_links?: Array<{ electrolysis_id: number }>;
+}
+
+const BASE_URL = '/api';
+
+// --- КОСТЫЛЬ ДЛЯ АВТО-ЛОГИНА ---
+// Функция проверяет токен и если его нет, сама логинится
+const ensureAuth = async (): Promise<string | null> => {
+    let token = localStorage.getItem('token');
+    
+    // Если токен есть, считаем что ок (можно добавить проверку срока действия, но для костыля так сойдет)
+    if (token) return token;
+
+    try {
+        console.log("Автоматический логин...");
+        // Хардкод кредов из вашего SQL дампа (andrew / andrew)
+        const res = await fetch(`${BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: 'admin_',
+                password: 'admin_'
+            })
+        });
+
+        if (!res.ok) {
+            console.error("Auto-login failed:", res.status);
+            return null;
+        }
+
+        const data = await res.json();
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+            console.log("Токен получен автоматически!");
+            return data.token;
+        }
+    } catch (e) {
+        console.error("Login error:", e);
+    }
+    return null;
+};
+// --------------------------------
+
+export const getOrderById = async (id: number): Promise<IOrder | null> => {
+    try {
+        // Сначала убеждаемся, что мы залогинены
+        const token = await ensureAuth();
+        
+        const headers: Record<string, string> = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        } else {
+            // Если токен так и не получили, нет смысла слать запрос - вернет 401
+            console.warn("Нет токена для запроса заказа");
+            return null;
+        }
+        
+        // Исправленный путь: /order/ (единственное число)
+        const res = await fetch(`${BASE_URL}/order/${id}`, { headers });
+        
+        if (!res.ok) {
+            // Если сервер вернул 401, возможно токен протух.
+            // Можно удалить токен, чтобы в след раз перелогиниться
+            if (res.status === 401) localStorage.removeItem('token');
+            return null;
+        } 
+        
+        return await res.json();
+    } catch (error) {
+        console.warn(`Failed to fetch order ${id}:`, error);
+        return null;
+    }
+};
 
 export const getElectrolysisList = async (
     params?: ElectrolysisListParams
@@ -33,7 +107,6 @@ export const getElectrolysisList = async (
         
         let filteredItems = [...ELECTROLYSIS_MOCK.items];
 
-        // Фильтр по названию
         if (params?.title) {
             const searchLower = params.title.toLowerCase();
             filteredItems = filteredItems.filter(item => 
@@ -41,7 +114,6 @@ export const getElectrolysisList = async (
             );
         }
 
-        // Фильтр по минимальному напряжению
         if (params?.min_voltage) {
             const minV = Number(params.min_voltage);
             if (!isNaN(minV)) {
@@ -51,7 +123,6 @@ export const getElectrolysisList = async (
             }
         }
 
-        // Фильтр по максимальному напряжению
         if (params?.max_voltage) {
             const maxV = Number(params.max_voltage);
             if (!isNaN(maxV)) {
@@ -61,16 +132,11 @@ export const getElectrolysisList = async (
             }
         }
 
-        // Возвращаем объект, соответствующий твоему интерфейсу IPaginatedElectrolysis
-        // Обычно это { items: ... }
         return {
             items: filteredItems
-            // Если TS будет ругаться, что не хватает 'total', раскомментируй следующую строку:
-            // total: filteredItems.length
         } as IPaginatedElectrolysis; 
     }
 };
-
 
 export const getElectrolysisById = async (id: string): Promise<IElectrolysis> => {
     try {
@@ -83,15 +149,10 @@ export const getElectrolysisById = async (id: string): Promise<IElectrolysis> =>
         return await res.json();
     } catch (error) {
         console.warn(`API недоступен для id=${id}, ищем в MOCK-данных:`, error);
-
         const item = ELECTROLYSIS_MOCK.items.find(
             (i: IElectrolysis) => i.id === Number(id)
         );
-
-        if (item) {
-            return item;
-        }
-
-        throw new Error(`Элемент с id ${id} не найден ни в API, ни в MOCK-данных`);
+        if (item) return item;
+        throw new Error(`Элемент с id ${id} не найден`);
     }
 };

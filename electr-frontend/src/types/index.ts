@@ -7,6 +7,8 @@ export interface IElectrolysis {
     base_voltage?: number;        // json:"base_voltage"
     material_coefficient?: number;// json:"material_coefficient"
     status?: boolean;             // json:"status"
+    calculated_count?: number;
+    calculated_value?: number;
 }
 
 export interface IPaginatedElectrolysis {

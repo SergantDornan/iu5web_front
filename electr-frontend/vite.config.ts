@@ -1,16 +1,16 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
-import mkcert from 'vite-plugin-mkcert';
+//import mkcert from 'vite-plugin-mkcert';
 
-// https://vitejs.dev/config/
+// [https://vitejs.dev/config/](https://vitejs.dev/config/)
 export default defineConfig({
 
   base: '/iu5web_front_electrolysis/',
 
   plugins: [
     react(),
-    mkcert(), // Создает локальный HTTPS сертификат и включает https
+   // mkcert(), // Создает локальный HTTPS сертификат и включает https
     VitePWA({
       registerType: 'autoUpdate',
       devOptions: {
@@ -46,8 +46,10 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080', // Или твой IP, если нужно
+        // --- ИЗМЕНЕНИЕ ЗДЕСЬ: Указываем реальный IP бэкенда ---
+        target: 'http://172.16.238.144:8080', 
         changeOrigin: true,
+        secure: false, // На всякий случай, если вдруг будет https
       },
     },
   },
