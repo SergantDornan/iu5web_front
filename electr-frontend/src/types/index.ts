@@ -1,19 +1,29 @@
+export interface IMedia {
+    id: number;
+    url: string;
+    type: 'image' | 'video';
+}
+
 export interface IElectrolysis {
     id: number;
     title: string;
     text: string;
-    image_url?: string;           // В твоем DTO это поле json:"image_url"
-    base_time?: number;           // json:"base_time"
-    base_voltage?: number;        // json:"base_voltage"
-    material_coefficient?: number;// json:"material_coefficient"
-    status?: boolean;             // json:"status"
-    calculated_count?: number;
+    image_url?: string;
+    base_time?: number;
+    base_voltage?: number;
+    material_coefficient?: number;
+    status?: boolean | number; // Updated to support both boolean and number (from order status)
+    
+    // Fields for polling (keep them!)
     calculated_value?: number;
+    
+    // New field for media (add this!)
+    media_files?: IMedia[];
 }
 
 export interface IPaginatedElectrolysis {
     items: IElectrolysis[];
-    total: number;
+    total: number; // Optional based on backend response, usually useful
 }
 
 export interface ICrumb {

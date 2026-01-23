@@ -33,8 +33,6 @@ export const ElectrolysisListPage = () => {
     }, [searchTitle, minVolt, maxVolt]);
 
 
-    // 2. Скрытый Поллинг (Invisible Polling)
-    // Каждые 3 секунды проверяем заказ, но НЕ обновляем UI (setItems не вызывается)
     useEffect(() => {
         const interval = setInterval(() => {
             getOrderById(1)
@@ -102,7 +100,7 @@ export const ElectrolysisListPage = () => {
             )}
             
             <div className="order-counter" style={{ position: 'fixed', top: '100px', right: '20px', display: 'flex', alignItems: 'center', gap: '10px', backgroundColor: '#003366', padding: '10px 15px', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.15)', color: '#fff', zIndex: 990 }}>
-                <span style={{ fontWeight: 'bold' }}>Услуг: {items.length}</span>
+                <span style={{ fontWeight: 'bold' }}>Услуг: 1</span>
                 <Link to="#" className="card-button" style={{ backgroundColor: '#fff', padding: '5px 10px', borderRadius: '6px', display: 'flex', alignItems: 'center' }}>
                     <img src={cartIcon} alt="Корзина" style={{ height: '35px', verticalAlign: 'middle' }} />
                 </Link>
