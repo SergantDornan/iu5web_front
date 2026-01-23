@@ -9,7 +9,7 @@ export interface ElectrolysisListParams {
 }
 
 // Можно оставить IP, как у тебя сейчас
-const BASE_URL = 'http://192.168.1.148:8080/api';
+const BASE_URL = 'http://172.16.242.165:8080/api';
 
 export const getElectrolysisList = async (
     params?: ElectrolysisListParams
