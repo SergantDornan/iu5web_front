@@ -47,7 +47,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         // --- ИЗМЕНЕНИЕ ЗДЕСЬ: Указываем реальный IP бэкенда ---
-        target: 'http://172.16.238.144:8080', 
+        target: 'http://172.16.242.165:8080', 
         changeOrigin: true,
         secure: false, // На всякий случай, если вдруг будет https
       },
